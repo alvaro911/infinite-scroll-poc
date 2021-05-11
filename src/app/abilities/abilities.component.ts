@@ -40,16 +40,16 @@ export class AbilitiesComponent implements OnInit, AfterViewInit {
     fromEvent(abilityCont, 'scroll').pipe(
       debounceTime(500),
       map((e: any) => this.temp = e.target.scrollTop),
-      mergeMap(() => {
-        if (this.temp > this.yPos) {
+      mergeMap(res => {
+        if (res > this.yPos) {
           return of(this.offset += 20);
         }
         return of(this.offset);
       }),
-      mergeMap(() => {
+      mergeMap(res => {
         if (this.temp > this.yPos) {
           this.yPos = this.temp;
-          return this.api.getAbilities(this.offset);
+          return this.api.getAbilities(res);
         }
         return of([]);
       }),
