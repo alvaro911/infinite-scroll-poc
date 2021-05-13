@@ -16,6 +16,7 @@ export class AbilitiesComponent implements OnInit, AfterViewInit {
   yPos = 0;
   temp = 0;
   counter = 0;
+  maxCount = 0;
 
   constructor(private api: ApiService) {}
 
@@ -25,6 +26,7 @@ export class AbilitiesComponent implements OnInit, AfterViewInit {
       map((res: any) => {
         this.abilities = res.results;
         this.counter = this.abilities.length;
+        this.maxCount = res.count;
         this.isLoading = false;
 
       })
@@ -47,7 +49,7 @@ export class AbilitiesComponent implements OnInit, AfterViewInit {
         return of(this.offset);
       }),
       mergeMap(res => {
-        if (this.temp > this.yPos) {
+        if (this.temp > this.yPos && this.abilities.length !== this.maxCount) {
           this.yPos = this.temp;
           return this.api.getAbilities(res);
         }
